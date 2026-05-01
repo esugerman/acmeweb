@@ -7,7 +7,7 @@ public class AvailableProcessorsDecorator extends ServerStatusDecorator {
     }
     @Override
     public String getStatusDesc() {
-        return decoratedStatus.getStatusDesc() + ", and there are 4 processors available";
+        return decoratedStatus.getStatusDesc() + ", and there are " + Runtime.getRuntime().availableProcessors() + " processors available";
     }
 
     @Override

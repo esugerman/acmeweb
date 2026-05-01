@@ -8,7 +8,7 @@ public class FreeJvmMemoryDecorator extends ServerStatusDecorator {
     }
     @Override
     public String getStatusDesc() {
-        return decoratedStatus.getStatusDesc() + ", and there are 127268272 bytes of JVM memory free";
+        return decoratedStatus.getStatusDesc() + ", and there are " + Runtime.getRuntime().freeMemory() + " bytes of JVM memory free";
     }
 
     @Override

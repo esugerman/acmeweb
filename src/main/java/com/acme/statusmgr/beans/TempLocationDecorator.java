@@ -6,7 +6,7 @@ public class TempLocationDecorator extends ServerStatusDecorator {
     }
     @Override
     public String getStatusDesc() {
-        return decoratedStatus.getStatusDesc() + ", and the server's temp file location is M:\\\\AppData\\\\Local\\\\Temp";
+        return decoratedStatus.getStatusDesc() + ", and the server's temp file location is " +System.getProperty("java.io.tmpdir");
     }
     @Override
     public Integer getRequestCost(){

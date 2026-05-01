@@ -6,7 +6,7 @@ public class JreVersionDecorator extends ServerStatusDecorator {
     }
     @Override
     public String getStatusDesc() {
-        return decoratedStatus.getStatusDesc() + ", and the JRE version is 15.0.2+7-27";
+        return decoratedStatus.getStatusDesc() + ", and the JRE version is " + System.getProperty("java.version");
     }
     @Override
     public Integer getRequestCost(){
