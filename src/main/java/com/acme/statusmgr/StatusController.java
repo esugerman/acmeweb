@@ -1,11 +1,13 @@
 package com.acme.statusmgr;
 
-import com.acme.statusmgr.beans.ServerStatus;
+import com.acme.statusmgr.beans.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +43,7 @@ public class StatusController {
      */
     @RequestMapping("/status")
     public ServerStatus getStatus(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
-        return new ServerStatus(counter.incrementAndGet(),
+        return new BasicServerStatus(counter.incrementAndGet(),
                 String.format(template, name));
     }
 
@@ -59,14 +61,27 @@ public class StatusController {
             @RequestParam(value = "name", defaultValue = "Anonymous") String name,
             @RequestParam List<String> details) {
 
-        ServerStatus detailedStatus = null;
+        ServerStatus detailedStatus = new BasicServerStatus(counter.incrementAndGet(), String.format(template, name));
 
         if (details != null) {
             Logger logger = LoggerFactory.getLogger("StatusController");
+            logger.info("Detailed status requested by " + name);
             logger.info("Details were provided: " + Arrays.toString(details.toArray()));
 
             //todo Should do something with all these details that were requested
 
+
+            for (String detail : details) {
+                detailedStatus = switch (detail) {
+                    case "availableProcessors" -> new AvailableProcessorsDecorator(detailedStatus);
+                    case "freeJVMMemory" -> new FreeJvmMemoryDecorator(detailedStatus);
+                    case "totalJVMMemory" -> new TotalJvmMemoryDecorator(detailedStatus);
+                    case "jreVersion" -> new JreVersionDecorator(detailedStatus);
+                    case "tempLocation" -> new TempLocationDecorator(detailedStatus);
+                    default -> throw new ResponseStatusException(
+                            HttpStatus.BAD_REQUEST, "Invalid details option: " + detail);
+                };
+            }
 
         }
         return detailedStatus; //todo shouldn't just return null
