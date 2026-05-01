@@ -6,7 +6,7 @@ public class TotalJvmMemoryDecorator extends ServerStatusDecorator {
     }
     @Override
     public String getStatusDesc() {
-        return decoratedStatus.getStatusDesc() + ", and there is a total of " + Runtime.getRuntime().totalMemory() + " bytes of JVM memory";
+        return decoratedStatus.getStatusDesc() + ", and there is a total of " + getSystemInfo().getTotalJvmMemory() + " bytes of JVM memory";
     }
     @Override
     public Integer getRequestCost(){

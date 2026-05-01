@@ -61,8 +61,7 @@ public class StatusController {
             @RequestParam(value = "name", defaultValue = "Anonymous") String name,
             @RequestParam List<String> details) {
 
-        ServerStatus detailedStatus = new BasicServerStatus(counter.incrementAndGet(), String.format(template, name));
-        ServerStatusFacade facade = new ServerStatusFacade(detailedStatus);
+        ServerStatusFacade facade = new ServerStatusFacade(counter.incrementAndGet(), String.format(template, name));
         if (details != null) {
             Logger logger = LoggerFactory.getLogger("StatusController");
             logger.info("Detailed status requested by " + name);
@@ -72,18 +71,18 @@ public class StatusController {
 
 
             for (String detail : details) {
-                detailedStatus = switch (detail) {
+                switch (detail) {
                     case "availableProcessors" -> facade.withAvailableProcessors();
-                    case "freeJVMMemory" -> facade.withFreeJvmMemory();
-                    case "totalJVMMemory" -> facade.withTotalJvmMemory();
-                    case "jreVersion" -> facade.withJreVersion();
-                    case "tempLocation" -> facade.withTempLocation();
+                    case "freeJVMMemory"       -> facade.withFreeJvmMemory();
+                    case "totalJVMMemory"      -> facade.withTotalJvmMemory();
+                    case "jreVersion"          -> facade.withJreVersion();
+                    case "tempLocation"        -> facade.withTempLocation();
                     default -> throw new ResponseStatusException(
                             HttpStatus.BAD_REQUEST, "Invalid details option: " + detail);
-                };
+                }
             }
 
         }
-        return detailedStatus; //todo shouldn't just return null
+        return facade.getServerStatus(); //todo shouldn't just return null
     }
 }

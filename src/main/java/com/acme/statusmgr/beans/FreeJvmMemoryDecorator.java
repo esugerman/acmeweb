@@ -1,14 +1,12 @@
 package com.acme.statusmgr.beans;
 
-
-
 public class FreeJvmMemoryDecorator extends ServerStatusDecorator {
     public FreeJvmMemoryDecorator(ServerStatus decoratedStatus) {
         super(decoratedStatus);
     }
     @Override
     public String getStatusDesc() {
-        return decoratedStatus.getStatusDesc() + ", and there are " + Runtime.getRuntime().freeMemory() + " bytes of JVM memory free";
+        return decoratedStatus.getStatusDesc() + ", and there are " + getSystemInfo().getFreeJvmMemory() + " bytes of JVM memory free";
     }
 
     @Override

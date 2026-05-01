@@ -9,7 +9,6 @@ public class BasicServerStatus implements ServerStatus{
      * requestCost constant will have to be changed if we change costs or calc dynamically
      */
     private final Integer requestCost = 1;  // the cost in pennies of this request.
-
     /**
      * Construct a ServerStatus using info passed in for identification.
      * This class must return a pretty, english-like representation of the server status.

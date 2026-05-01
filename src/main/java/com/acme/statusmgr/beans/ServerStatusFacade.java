@@ -2,28 +2,42 @@ package com.acme.statusmgr.beans;
 
 public class ServerStatusFacade {
 
-    private final ServerStatus baseStatus;
+    private ServerStatus serverStatus;
 
-    public ServerStatusFacade(ServerStatus baseStatus){
-        this.baseStatus = baseStatus;
-    }
-    public ServerStatus withAvailableProcessors() {
-        return new AvailableProcessorsDecorator(baseStatus);
+    public ServerStatusFacade() {
+        this.serverStatus = new BasicServerStatus();
     }
 
-    public ServerStatus withFreeJvmMemory() {
-        return new FreeJvmMemoryDecorator(baseStatus);
+    public ServerStatusFacade(long id, String contentHeader) {
+        this.serverStatus = new BasicServerStatus(id, contentHeader);
     }
 
-    public ServerStatus withTotalJvmMemory() {
-        return new TotalJvmMemoryDecorator(baseStatus);
+    public ServerStatusFacade withAvailableProcessors() {
+        serverStatus = new AvailableProcessorsDecorator(serverStatus); // wraps current
+        return this;
     }
 
-    public ServerStatus withJreVersion() {
-        return new JreVersionDecorator(baseStatus);
+    public ServerStatusFacade withFreeJvmMemory() {
+        serverStatus = new FreeJvmMemoryDecorator(serverStatus); // wraps current
+        return this;
     }
 
-    public ServerStatus withTempLocation() {
-        return new TempLocationDecorator(baseStatus);
+    public ServerStatusFacade withTotalJvmMemory() {
+        serverStatus = new TotalJvmMemoryDecorator(serverStatus); // wraps current
+        return this;
+    }
+
+    public ServerStatusFacade withJreVersion() {
+        serverStatus = new JreVersionDecorator(serverStatus); // wraps current
+        return this;
+    }
+
+    public ServerStatusFacade withTempLocation() {
+        serverStatus = new TempLocationDecorator(serverStatus); // wraps current
+        return this;
+    }
+
+    public ServerStatus getServerStatus() {
+        return serverStatus;
     }
 }
