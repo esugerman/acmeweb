@@ -1,5 +1,7 @@
 package com.acme;
 
+import com.acme.statusmgr.beans.RealSystemInfo;
+import com.acme.statusmgr.beans.ServerStatusDecorator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Application {
 
     public static void main(String[] args) {
+        ServerStatusDecorator.setSystemInfo(new RealSystemInfo());
         SpringApplication.run(Application.class, args);
     }
 }

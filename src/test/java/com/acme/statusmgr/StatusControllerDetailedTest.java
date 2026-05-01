@@ -15,6 +15,8 @@
  */
 package com.acme.statusmgr;
 
+import com.acme.statusmgr.beans.MockSystemInfo;
+import com.acme.statusmgr.beans.ServerStatusDecorator;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -44,7 +46,8 @@ public class StatusControllerDetailedTest {
      */
     @BeforeAll
     public static void beforeAll() {
-       //todo StatusController.setSystemInfoFacade(null /* todo: Inject appropriate object */);
+        // Arrange - tell all decorators to use fake predetermined values
+        ServerStatusDecorator.setSystemInfo(new MockSystemInfo());
     }
 
 
@@ -153,7 +156,7 @@ public class StatusControllerDetailedTest {
         this.mockMvc.perform(get("/server/status/detailed?name=Yankel"))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(status().reason(Matchers.is(
-                        "Required request parameter 'details' for method parameter type List is not present")));
+                        "Required parameter 'details' is not present.")));
 
     }
 
